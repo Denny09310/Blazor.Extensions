@@ -1,6 +1,6 @@
 ﻿@page "/"
-@using BlazorApp1.Options
-@using BlazorApp1.Services
+@using Blazor.Extensions.BottomSheet.Services
+@using Blazor.Extensions.BottomSheet.Options
 @inject IBottomSheetService BottomSheetService
 
 <PageTitle>Home</PageTitle>
@@ -25,10 +25,7 @@
         BottomSheetService.ShowBottomSheet<ExampleBottomSheetContent>("Draggable Bottom Sheet Modal", options: new BottomSheetOptions
         {
             Breakpoints = [75, 100],
-            Events = new BottomSheetEventsOptions
-            {
-                OnDidDismiss = DotNetCallbackReference.Create(() => Console.WriteLine("Dismiss from custom options")),
-            }
+            InitialBreakpoint = 75,
         });
     }
 

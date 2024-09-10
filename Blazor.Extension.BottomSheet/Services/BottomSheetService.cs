@@ -1,7 +1,7 @@
-﻿using BlazorApp1.Options;
+﻿using Blazor.Extensions.BottomSheet.Options;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp1.Services;
+namespace Blazor.Extensions.BottomSheet.Services;
 
 public class BottomSheetService : IBottomSheetService
 {

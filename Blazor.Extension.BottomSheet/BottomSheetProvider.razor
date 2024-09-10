@@ -1,14 +1,12 @@
-﻿@using BlazorApp1.Options
-@using BlazorApp1.Services
-@inject IBottomSheetService BottomSheetService
+﻿@inject IBottomSheetService BottomSheetService
 
-<BottomSheet @ref="_bottomSheet" Title="@Title" Options="Options" OnDidDismiss="RestoreDefaults">
+<BottomSheet @ref="_bottomSheet" Title="@Title" Options="Options" OnWillDismiss="RestoreDefaults">
     <BottomSheetContent>
         @BottomSheetContent
     </BottomSheetContent>
 </BottomSheet>
 
-@code 
+@code
 {
     [Parameter]
     public BottomSheetOptions Options { get; set; } = new();
@@ -22,6 +20,7 @@
     protected override void OnInitialized()
     {
         _previousOptions = Options;
+        EnsureCorrectEventsOptions(Options.Events);
 
         BottomSheetService.ShowRequested += HandleShowBottomSheet;
         BottomSheetService.HideRequested += HandleHideBottomSheet;
@@ -35,23 +34,43 @@
         if (options != null)
         {
             _previousOptions = Options;
+
+            EnsureCorrectEventsOptions(options.Events);
+
             Options = options;
+            await _bottomSheet.UpdateOptions(Options);
         }
 
-        await InvokeAsync(StateHasChanged);
-        await _bottomSheet.ShowAsync();
+        await InvokeAsync(async () =>
+        {
+            StateHasChanged();
+            await _bottomSheet.ShowAsync();
+        });
     }
 
     private async void HandleHideBottomSheet()
     {
-        await _bottomSheet.HideAsync();
-        await InvokeAsync(StateHasChanged);
+        await InvokeAsync(async () =>
+        {
+            await _bottomSheet.HideAsync();
+            StateHasChanged();
+        });
     }
 
-    private void RestoreDefaults()
+    private async Task RestoreDefaults()
     {
         BottomSheetContent = null;
         Title = null;
         Options = _previousOptions;
+
+        await _bottomSheet.UpdateOptions(Options, merge: false);
+    }
+
+    private void EnsureCorrectEventsOptions(BottomSheetEventsOptions? options)
+    {
+        if (options?.OnWillDismiss != null)
+        {
+            throw new InvalidOperationException($"{nameof(BottomSheetOptions.Events.OnWillDismiss)} cannot be used inside the {nameof(BottomSheetProvider)}");
+        }
     }
 }

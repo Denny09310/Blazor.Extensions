@@ -1,7 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using System.Text.Json.Serialization;
 
-namespace BlazorApp1.Options;
+namespace Blazor.Extensions.BottomSheet.Options;
 
 public class BottomSheetOptions
 {
@@ -10,6 +10,9 @@ public class BottomSheetOptions
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public BottomSheetEventsOptions? Events { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public double? InitialBreakpoint { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? LightDismiss { get; set; }

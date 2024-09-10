@@ -1,5 +1,5 @@
+using Blazor.Extensions.BottomSheet.Services;
 using BlazorApp1;
-using BlazorApp1.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

@@ -55,21 +55,27 @@
         this.container.classList.toggle("fullscreen", height === 100);
     }
 
-    updateOptions(options) {
-        this.#options = {
-            ...this.#options,
-            ...Object.entries(options).reduce((acc, [key, value]) => {
-                if (value !== null && value !== undefined) {
-                    acc[key] = value;
-                }
-                return acc;
-            }, {})
-        };
+    updateOptions(options, merge = true) {
+        if (merge) {
+            this.#options = {
+                ...this.#options,
+                ...Object.entries(options).reduce((acc, [key, value]) => {
+                    if (value !== null && value !== undefined) {
+                        acc[key] = value;
+                    }
+                    return acc;
+                }, {})
+            };
 
-        this.#events = {
-            ...this.#events,
-            ...options?.events ?? {}
-        };
+            this.#events = {
+                ...this.#events,
+                ...options?.events ?? {}
+            };
+        }
+        else {
+            this.#options = options;
+            this.#events = options?.events ?? {}
+        }
     }
 
     hide() {
