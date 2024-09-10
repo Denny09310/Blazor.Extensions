@@ -1,0 +1,55 @@
+.bottom-sheet-container {
+    @apply fixed top-0 left-0 size-full flex opacity-0 pointer-events-none items-center justify-end flex-col transition-all ease-linear;
+}
+
+.bottom-sheet-container.show {
+    @apply opacity-100 pointer-events-auto;
+}
+
+.bottom-sheet-container .sheet-overlay {
+    @apply fixed top-0 left-0 -z-10 size-full opacity-20 bg-gray-900 dark:bg-gray-200;
+}
+
+.bottom-sheet-container .sheet-content {
+    @apply w-full relative text-black max-h-screen h-[50vh] max-w-screen-xl px-6 py-8 translate-y-full rounded-t shadow-sm transition-all bg-gray-200 dark:bg-black dark:text-white ;
+}
+
+.bottom-sheet-container.show .sheet-content {
+    @apply translate-y-0;
+}
+
+.bottom-sheet-container.dragging .sheet-content {
+    @apply transition-none;
+}
+
+.bottom-sheet-container.fullscreen .sheet-content {
+    @apply rounded-none overflow-y-hidden;
+}
+
+.bottom-sheet-container .sheet-header {
+    @apply flex justify-center;
+}
+
+.sheet-header .sheet-drag-icon {
+    @apply cursor-grab select-none p-4 -mt-4;
+}
+
+.sheet-header .sheet-drag-icon span {
+    @apply h-1 w-10 block bg-[#c7d0e1] rounded-full;
+}
+
+.bottom-sheet-container .sheet-body {
+    @apply h-full overflow-y-auto scrollbar-hide pt-4 pb-10;
+}
+
+.bottom-sheet-container .sheet-body::-webkit-scrollbar {
+    @apply w-0;
+}
+
+.sheet-body h2 {
+    @apply text-3xl;
+}
+
+.sheet-body p {
+    @apply mt-5 text-lg;
+}

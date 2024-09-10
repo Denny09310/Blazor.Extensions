@@ -1,0 +1,57 @@
+﻿@using BlazorApp1.Options
+@using BlazorApp1.Services
+@inject IBottomSheetService BottomSheetService
+
+<BottomSheet @ref="_bottomSheet" Title="@Title" Options="Options" OnDidDismiss="RestoreDefaults">
+    <BottomSheetContent>
+        @BottomSheetContent
+    </BottomSheetContent>
+</BottomSheet>
+
+@code 
+{
+    [Parameter]
+    public BottomSheetOptions Options { get; set; } = new();
+
+    private BottomSheet _bottomSheet = default!;
+    private BottomSheetOptions _previousOptions = default!;
+
+    private RenderFragment? BottomSheetContent { get; set; }
+    private string? Title { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _previousOptions = Options;
+
+        BottomSheetService.ShowRequested += HandleShowBottomSheet;
+        BottomSheetService.HideRequested += HandleHideBottomSheet;
+    }
+
+    private async void HandleShowBottomSheet(string title, RenderFragment content, BottomSheetOptions? options)
+    {
+        BottomSheetContent = content;
+        Title = title;
+
+        if (options != null)
+        {
+            _previousOptions = Options;
+            Options = options;
+        }
+
+        await InvokeAsync(StateHasChanged);
+        await _bottomSheet.ShowAsync();
+    }
+
+    private async void HandleHideBottomSheet()
+    {
+        await _bottomSheet.HideAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void RestoreDefaults()
+    {
+        BottomSheetContent = null;
+        Title = null;
+        Options = _previousOptions;
+    }
+}

@@ -1,0 +1,42 @@
+﻿@page "/"
+@using BlazorApp1.Options
+@using BlazorApp1.Services
+@inject IBottomSheetService BottomSheetService
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<p>Welcome to your new app.</p>
+
+<button class="show-modal-btn" @onclick="ShowBottomSheetComponent">Show Bottom Sheet</button>
+<button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithOptions">Show Bottom Sheet With Options</button>
+<button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithParameters">Show Bottom Sheet With Parameters</button>
+
+@code
+{
+    private void ShowBottomSheetComponent()
+    {
+        BottomSheetService.ShowBottomSheet<ExampleBottomSheetContent>("Draggable Bottom Sheet Modal");
+    }
+
+    private void ShowBottomSheetComponentWithOptions()
+    {
+        BottomSheetService.ShowBottomSheet<ExampleBottomSheetContent>("Draggable Bottom Sheet Modal", options: new BottomSheetOptions
+        {
+            Breakpoints = [75, 100],
+            Events = new BottomSheetEventsOptions
+            {
+                OnDidDismiss = DotNetCallbackReference.Create(() => Console.WriteLine("Dismiss from custom options")),
+            }
+        });
+    }
+
+    private void ShowBottomSheetComponentWithParameters()
+    {
+        BottomSheetService.ShowBottomSheet<ExampleBottomSheetComponentWithParameters>("Draggable Bottom Sheet Modal", new Dictionary<string, object>
+        {
+            [nameof(ExampleBottomSheetComponentWithParameters.Name)] = "Dennis"
+        });
+    }
+}

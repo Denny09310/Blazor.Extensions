@@ -1,0 +1,91 @@
+﻿@using BlazorApp1.Options
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+
+<div @ref="element" class="bottom-sheet-container">
+    <div class="sheet-overlay"></div>
+    <div class="sheet-content">
+        <div class="sheet-header">
+            <div class="sheet-drag-icon"><span></span></div>
+        </div>
+        <div class="sheet-body">
+            @if(!string.IsNullOrWhiteSpace(Title))
+            {
+                <h2>@Title</h2>                
+            }
+            @BottomSheetContent            
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private BottomSheetOptions? options;
+    private IJSObjectReference reference = default!;
+    private ElementReference element;
+
+    [Parameter]
+    public RenderFragment? BottomSheetContent { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public BottomSheetOptions Options { get; set; } = new();
+
+    [Parameter]
+    public EventCallback OnDidDismiss { get; set; }
+
+    [Parameter]
+    public EventCallback OnDidShow { get; set; }
+
+    [Parameter]
+    public EventCallback OnWillDismiss { get; set; }
+
+    [Parameter]
+    public EventCallback OnWillShow { get; set; }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (reference != null)
+        {
+            await reference.DisposeAsync();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Options.Breakpoints = [25, 75];
+            Options.LightDismiss = true;
+            Options.Events = new BottomSheetEventsOptions
+            {
+                OnDidDismiss = DotNetCallbackReference.Create(() => OnDidDismiss.InvokeAsync()),
+                OnDidShow = DotNetCallbackReference.Create(() => OnDidShow.InvokeAsync()),
+                OnWillDismiss = DotNetCallbackReference.Create(() => OnWillDismiss.InvokeAsync()),
+                OnWillShow = DotNetCallbackReference.Create(() => OnWillShow.InvokeAsync()),
+            };
+
+            var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/BottomSheet.razor.js");
+            reference = await module.InvokeAsync<IJSObjectReference>("initialize", element.Id, Options);
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!ReferenceEquals(options, Options))
+        {
+            if (reference != null)
+            {
+                await reference.InvokeVoidAsync("updateOptions", Options);
+            }
+
+            options = Options;
+        }
+    }
+
+    public ValueTask ShowAsync() => reference.InvokeVoidAsync("show");
+
+    public ValueTask HideAsync() => reference.InvokeVoidAsync("hide");
+}
