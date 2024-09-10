@@ -5,13 +5,14 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Bottom Sheet</h1>
 
-<p>Welcome to your new app.</p>
-
-<button class="show-modal-btn" @onclick="ShowBottomSheetComponent">Show Bottom Sheet</button>
-<button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithOptions">Show Bottom Sheet With Options</button>
-<button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithParameters">Show Bottom Sheet With Parameters</button>
+<div class="flex flex-col gap-2 p-4">
+    <button class="show-modal-btn" @onclick="ShowBottomSheetComponent">Show Bottom Sheet</button>
+    <button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithOptions">Show Bottom Sheet With Options</button>
+    <button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithCustomClasses">Show Bottom Sheet With Custom Classes</button>
+    <button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithParameters">Show Bottom Sheet With Parameters</button>
+</div>
 
 @code
 {
@@ -26,12 +27,24 @@
         {
             Breakpoints = [75, 100],
             InitialBreakpoint = 75,
+            LightDismiss = false,
+        });
+    }
+
+    private void ShowBottomSheetComponentWithCustomClasses()
+    {
+        BottomSheetService.ShowBottomSheet<ExampleBottomSheetContent>("Draggable Bottom Sheet Modal", options: new BottomSheetOptions
+        {
+            Classes =
+            {
+                Content = "!bg-red-400"
+            }
         });
     }
 
     private void ShowBottomSheetComponentWithParameters()
     {
-        BottomSheetService.ShowBottomSheet<ExampleBottomSheetComponentWithParameters>("Draggable Bottom Sheet Modal", new Dictionary<string, object>
+        BottomSheetService.ShowBottomSheet<ExampleBottomSheetComponentWithParameters>("Draggable Bottom Sheet Modal", parameters: new Dictionary<string, object>
         {
             [nameof(ExampleBottomSheetComponentWithParameters.Name)] = "Dennis"
         });

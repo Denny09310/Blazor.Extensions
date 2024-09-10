@@ -1,5 +1,4 @@
-﻿using Microsoft.JSInterop;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Blazor.Extensions.BottomSheet.Options;
 
@@ -7,6 +6,9 @@ public class BottomSheetOptions
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double[]? Breakpoints { get; set; }
+
+    [JsonIgnore]
+    public BottomSheetClassesOptions Classes { get; set; } = new();
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public BottomSheetEventsOptions? Events { get; set; }
@@ -16,19 +18,4 @@ public class BottomSheetOptions
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? LightDismiss { get; set; }
-}
-
-public class BottomSheetEventsOptions
-{
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public DotNetCallbackReference? OnDidDismiss { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public DotNetCallbackReference? OnDidShow { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public DotNetCallbackReference? OnWillDismiss { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public DotNetCallbackReference? OnWillShow { get; set; }
 }
