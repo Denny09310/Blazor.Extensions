@@ -1,0 +1,7 @@
+.pull-to-refresh-default-spinner {
+    @apply flex items-center justify-center size-12 relative bg-white rounded-full p-2;
+}
+
+.pull-to-refresh-spinner-circle {
+    @apply size-full border-4 border-[#ccc] border-t-[#007bff] rounded-full animate-spin;
+}

@@ -1,0 +1,46 @@
+@using Blazor.Extensions.Refresher.Options
+
+@inject IJSRuntime JSRuntime
+
+<div @ref="element" class="pull-to-refresh-container @Class">
+    <div class="pull-to-refresh">
+        @RefresherLoader
+    </div>
+
+    @RefresherContent
+</div>
+
+@code
+{
+    [Parameter]
+    public RenderFragment? RefresherLoader { get; set; }
+
+    [Parameter]
+    public RenderFragment? RefresherContent { get; set; }
+
+    [Parameter]
+    public RefresherOptions Options { get; set; } = new();
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public EventCallback OnRefresh { get; set; }
+
+    private ElementReference element;
+    private IJSObjectReference reference = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Options.Events = new RefresherEventsOptions
+            {
+                OnRefresh = DotNetCallbackReference.Create(() => OnRefresh.InvokeAsync()),
+            };
+
+            var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Blazor.Extensions.Refresher/Refresher.razor.js");
+            reference = await module.InvokeAsync<IJSObjectReference>("initialize", element, Options);
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.pull-to-refresh-container {
+    @apply overscroll-y-auto;
+}
+
+.pull-to-refresh-container .pull-to-refresh {
+    @apply fixed -top-16 w-full h-16 flex justify-center items-center transition-all;
+}
+
+.pull-to-refresh-container .pull-to-refresh.visible {
+    @apply top-2;
+}

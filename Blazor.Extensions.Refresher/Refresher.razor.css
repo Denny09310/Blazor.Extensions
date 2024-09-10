@@ -1,0 +1,32 @@
+.pull-to-refresh-container {
+
+    overscroll-behavior-y: auto
+}
+
+.pull-to-refresh-container .pull-to-refresh {
+
+    position: fixed;
+
+    top: -4rem;
+
+    display: flex;
+
+    height: 4rem;
+
+    width: 100%;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition-property: all;
+
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+    transition-duration: 150ms
+}
+
+.pull-to-refresh-container .pull-to-refresh.visible {
+
+    top: 0.5rem
+}

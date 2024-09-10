@@ -1,0 +1,18 @@
+<div class="pull-to-refresh-loader">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <div class="pull-to-refresh-default-spinner">
+            <div class="pull-to-refresh-spinner-circle"></div>
+        </div>
+    }
+</div>
+
+@code
+{
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

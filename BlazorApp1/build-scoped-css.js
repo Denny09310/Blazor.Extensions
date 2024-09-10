@@ -8,10 +8,9 @@ console.log("Building CSS files...");
 
 const paths = [
     "./**/*.scss",
-    "../Blazor.Extensions.BottomSheet/**/*.scss"
+    "../Blazor.Extensions.BottomSheet/**/*.scss",
+    "../Blazor.Extensions.Refresher/**/*.scss",
 ];
-
-console.log(paths)
 
 const options = {
     ignore: 'node_modules/**'
