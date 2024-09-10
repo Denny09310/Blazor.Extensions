@@ -8,7 +8,7 @@ public class BottomSheetOptions
     public double[]? Breakpoints { get; set; }
 
     [JsonIgnore]
-    public BottomSheetClassesOptions Classes { get; set; } = new();
+    public string? CustomClass { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public BottomSheetEventsOptions? Events { get; set; }

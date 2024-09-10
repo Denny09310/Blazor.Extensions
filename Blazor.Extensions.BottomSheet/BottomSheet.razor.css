@@ -1,4 +1,4 @@
-.bottom-sheet-container {
+.sheet-container {
 
     pointer-events: none;
 
@@ -31,14 +31,14 @@
     transition-timing-function: linear
 }
 
-.bottom-sheet-container.show {
+.sheet-container.show {
 
     pointer-events: auto;
 
     opacity: 1
 }
 
-.bottom-sheet-container .sheet-overlay {
+.sheet-container .sheet-overlay {
 
     position: fixed;
 
@@ -61,7 +61,7 @@
 
 @media (prefers-color-scheme: dark) {
 
-    .bottom-sheet-container .sheet-overlay {
+    .sheet-container .sheet-overlay {
 
         --tw-bg-opacity: 1;
 
@@ -69,7 +69,7 @@
     }
 }
 
-.bottom-sheet-container .sheet-content {
+.sheet-container .sheet-content {
 
     position: relative;
 
@@ -120,7 +120,7 @@
 
 @media (prefers-color-scheme: dark) {
 
-    .bottom-sheet-container .sheet-content {
+    .sheet-container .sheet-content {
 
         --tw-bg-opacity: 1;
 
@@ -132,26 +132,26 @@
     }
 }
 
-.bottom-sheet-container.show .sheet-content {
+.sheet-container.show .sheet-content {
 
     --tw-translate-y: 0px;
 
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
 }
 
-.bottom-sheet-container.dragging .sheet-content {
+.sheet-container.dragging .sheet-content {
 
     transition-property: none
 }
 
-.bottom-sheet-container.fullscreen .sheet-content {
+.sheet-container.fullscreen .sheet-content {
 
     overflow-y: hidden;
 
     border-radius: 0px
 }
 
-.bottom-sheet-container .sheet-header {
+.sheet-container .sheet-header {
 
     display: flex;
 
@@ -188,7 +188,7 @@
     background-color: rgb(199 208 225 / var(--tw-bg-opacity))
 }
 
-.bottom-sheet-container .sheet-body {
+.sheet-container .sheet-body {
 
     height: 100%;
 
@@ -203,7 +203,7 @@
     scrollbar-width: none
 }
 
-.bottom-sheet-container .sheet-body::-webkit-scrollbar {
+.sheet-container .sheet-body::-webkit-scrollbar {
 
     display: none;
 

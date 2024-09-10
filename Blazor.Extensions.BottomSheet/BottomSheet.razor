@@ -1,13 +1,13 @@
 ﻿@implements IAsyncDisposable
 @inject IJSRuntime JSRuntime
 
-<div @ref="element" class="bottom-sheet-container @Classes.Container">
-    <div class="sheet-overlay @Classes.Overlay"></div>
-    <div class="sheet-content @Classes.Content">
-        <div class="sheet-header @Classes.Header">
-            <div class="sheet-drag-icon @Classes.DragIcon"><span></span></div>
+<div @ref="element" class="sheet-container @Options.CustomClass">
+    <div class="sheet-overlay"></div>
+    <div class="sheet-content">
+        <div class="sheet-header">
+            <div class="sheet-drag-icon"><span></span></div>
         </div>
-        <div class="sheet-body @Classes.Body">
+        <div class="sheet-body">
             @if(!string.IsNullOrWhiteSpace(Title))
             {
                 <h2>@Title</h2>                
@@ -42,8 +42,6 @@
 
     [Parameter]
     public EventCallback OnWillShow { get; set; }
-
-    private BottomSheetClassesOptions Classes => Options.Classes;
 
     public async ValueTask DisposeAsync()
     {

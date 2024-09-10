@@ -17,6 +17,7 @@
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 		<Watch Include="./**/*.scss" />
+		<Watch Include="../Blazor.Extensions.BottomSheet/**/*.scss" />
 	</ItemGroup>
 
 	<Target Name="StylesCompile" BeforeTargets="BeforeBuild">

@@ -24,7 +24,7 @@
         this.#options = options;
         this.#events = options?.events ?? {};
 
-        this.container = document.querySelector(`.bottom-sheet-container[_bl_${id}]`);
+        this.container = document.querySelector(`.sheet-container[_bl_${id}]`);
         const overlay = this.container.querySelector(".sheet-overlay");
 
         this.#content = this.container.querySelector(".sheet-content");
@@ -56,6 +56,8 @@
     }
 
     updateOptions(options, merge = true) {
+        if (!options) return;
+
         if (merge) {
             this.#options = {
                 ...this.#options,
