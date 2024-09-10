@@ -21,6 +21,8 @@
     {
         EnsureCorrectEventsOptions(Options.Events);
 
+        _previousOptions = Options;
+
         BottomSheetService.ShowRequested += HandleShowBottomSheet;
         BottomSheetService.HideRequested += HandleHideBottomSheet;
     }
@@ -33,6 +35,7 @@
         if (options != null)
         {
             EnsureCorrectEventsOptions(options.Events);
+            
             _previousOptions = Options;
             Options = options;
 

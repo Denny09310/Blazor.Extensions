@@ -20,11 +20,11 @@
     #onDragging;
     #onDragStop;
 
-    constructor(id, options) {
+    constructor(container, options) {
         this.#options = options;
         this.#events = options?.events ?? {};
 
-        this.container = document.querySelector(`.sheet-container[_bl_${id}]`);
+        this.container = container;
         const overlay = this.container.querySelector(".sheet-overlay");
 
         this.#content = this.container.querySelector(".sheet-content");
@@ -150,4 +150,4 @@
     };
 }
 
-export const initialize = (id, options) => new BottomSheet(id, options)
+export const initialize = (container, options) => new BottomSheet(container, options)
