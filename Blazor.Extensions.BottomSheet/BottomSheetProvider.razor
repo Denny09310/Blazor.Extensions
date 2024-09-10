@@ -12,14 +12,12 @@
     public BottomSheetOptions Options { get; set; } = new();
 
     private BottomSheet _bottomSheet = default!;
-    private BottomSheetOptions _previousOptions = default!;
 
     private RenderFragment? BottomSheetContent { get; set; }
     private string? Title { get; set; }
 
     protected override void OnInitialized()
     {
-        _previousOptions = Options;
         EnsureCorrectEventsOptions(Options.Events);
 
         BottomSheetService.ShowRequested += HandleShowBottomSheet;
@@ -33,12 +31,8 @@
 
         if (options != null)
         {
-            _previousOptions = Options;
-
             EnsureCorrectEventsOptions(options.Events);
-
-            Options = options;
-            await _bottomSheet.UpdateOptions(Options);
+            await _bottomSheet.UpdateOptions(options);
         }
 
         await InvokeAsync(async () =>
@@ -61,7 +55,6 @@
     {
         BottomSheetContent = null;
         Title = null;
-        Options = _previousOptions;
 
         await _bottomSheet.UpdateOptions(Options, merge: false);
     }
