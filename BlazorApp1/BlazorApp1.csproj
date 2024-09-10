@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Blazor.Extension.BottomSheet\Blazor.Extensions.BottomSheet.csproj" />
+		<ProjectReference Include="..\Blazor.Extensions.BottomSheet\Blazor.Extensions.BottomSheet.csproj" />
 		<PackageReference Include="Blazor.Javascript.Interop.Extensions" Version="0.0.3.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" PrivateAssets="all" />
