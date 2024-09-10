@@ -11,8 +11,8 @@
     [Parameter]
     public BottomSheetOptions Options { get; set; } = new();
 
-    private BottomSheetOptions _previousOptions;
-    private BottomSheet? _bottomSheet = default!;
+    private BottomSheetOptions? _previousOptions;
+    private BottomSheet _bottomSheet = default!;
 
     private RenderFragment? BottomSheetContent { get; set; }
     private string? Title { get; set; }
@@ -20,8 +20,6 @@
     protected override void OnInitialized()
     {
         EnsureCorrectEventsOptions(Options.Events);
-
-        _previousOptions = Options;
 
         BottomSheetService.ShowRequested += HandleShowBottomSheet;
         BottomSheetService.HideRequested += HandleHideBottomSheet;
