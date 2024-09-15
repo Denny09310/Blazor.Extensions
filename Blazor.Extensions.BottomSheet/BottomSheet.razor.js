@@ -1,67 +1,37 @@
-﻿class BottomSheet {
-    // Public Properties
-    container;
+﻿export const initialize = (container, options) => {
+    let { events, breakpoints, initialBreakpoint, lightDismiss } = options;
 
-    // Private Configuration Properties
-    #options;
-    #events;
+    const overlay = container.querySelector(".sheet-overlay");
+    const content = container.querySelector(".sheet-content");
+    const icon = container.querySelector(".sheet-drag-icon");
 
-    // Private State Properties
-    #isDragging = false;
-    #startY;
-    #startHeight;
+    let isDragging = false;
+    let startY = 0;
+    let startHeight = 0;
 
-    // Private Element References
-    #content;
-    #icon;
+    const updateHeight = (height) => {
+        content.style.height = `${height}vh`;
+        container.classList.toggle("fullscreen", height === 100);
+    };
 
-    // Private Event Handlers
-    #onDragStart;
-    #onDragging;
-    #onDragStop;
+    const show = () => {
+        events.onWillShow();
 
-    constructor(container, options) {
-        this.#options = options;
-        this.#events = options?.events ?? {};
-
-        this.container = container;
-        const overlay = this.container.querySelector(".sheet-overlay");
-
-        this.#content = this.container.querySelector(".sheet-content");
-        this.#icon = this.container.querySelector(".sheet-drag-icon");
-
-        this.#onDragStart = this.#dragStart.bind(this);
-        this.#onDragging = this.#dragging.bind(this);
-        this.#onDragStop = this.#dragStop.bind(this);
-
-        overlay.addEventListener("click", this.#dismiss.bind(this));
-    }
-
-    show() {
-        this.#events.onWillShow();
-
-        this.#attachEvents()
-
-        this.container.classList.add("show");
+        container.classList.add("show");
         document.body.style.overflowY = "hidden";
 
-        this.updateHeight(this.#options.initialBreakpoint ?? this.#options.breakpoints[0]);
+        updateHeight(initialBreakpoint ?? breakpoints[0]);
 
-        this.#events.onDidShow();
-    }
+        events.onDidShow();
+    };
 
-    updateHeight(height) {
-        this.#content.style.height = `${height}vh`;
-        this.container.classList.toggle("fullscreen", height === 100);
-    }
-
-    updateOptions(options, merge = true) {
-        if (!options) return;
+    const updateOptions = (newOptions, merge = true) => {
+        if (!newOptions) return;
 
         if (merge) {
-            this.#options = {
-                ...this.#options,
-                ...Object.entries(options).reduce((acc, [key, value]) => {
+            options = {
+                ...options,
+                ...Object.entries(newOptions).reduce((acc, [key, value]) => {
                     if (value !== null && value !== undefined) {
                         acc[key] = value;
                     }
@@ -69,85 +39,89 @@
                 }, {})
             };
 
-            this.#events = {
-                ...this.#events,
-                ...options?.events ?? {}
+            events = {
+                ...events,
+                ...newOptions?.events ?? {}
             };
         }
         else {
-            this.#options = options;
-            this.#events = options?.events ?? {}
+            options = newOptions;
+            events = newOptions?.events ?? {};
         }
-    }
+    };
 
-    hide() {
-        this.#events.onWillDismiss();
+    const hide = () => {
+        events.onWillDismiss();
 
-        this.container.classList.remove("show");
+        container.classList.remove("show");
         document.body.style.overflowY = "auto";
 
-        this.#deattachEvents();
-
-        this.#events.onDidDismiss();
-    }
-
-    #dismiss() {
-        if (this.#options.lightDismiss) {
-            this.hide()
-        }
-    }
-
-    #attachEvents() {
-        this.#icon.addEventListener("mousedown", this.#onDragStart);
-        document.addEventListener("mousemove", this.#onDragging);
-        document.addEventListener("mouseup", this.#onDragStop);
-
-        this.#icon.addEventListener("touchstart", this.#onDragStart, { passive: true });
-        document.addEventListener("touchmove", this.#onDragging, { passive: true });
-        document.addEventListener("touchend", this.#onDragStop, { passive: true });
-    }
-
-    #deattachEvents() {
-        this.#icon.removeEventListener("mousedown", this.#onDragStart);
-        document.removeEventListener("mousemove", this.#onDragging);
-        document.removeEventListener("mouseup", this.#onDragStop);
-
-        this.#icon.removeEventListener("touchstart", this.#onDragStart, { passive: true });
-        document.removeEventListener("touchmove", this.#onDragging, { passive: true });
-        document.removeEventListener("touchend", this.#onDragStop, { passive: true });
-    }
-
-    #dragStart = (e) => {
-        this.#isDragging = true;
-        this.#startY = e.pageY || e.touches?.[0].pageY;
-        this.#startHeight = parseInt(this.#content.style.height);
-        this.container.classList.add("dragging");
+        events.onDidDismiss();
     };
 
-    #dragging = (e) => {
-        if (!this.#isDragging) return;
-        const delta = this.#startY - (e.pageY || e.touches?.[0].pageY);
-        const newHeight = this.#startHeight + (delta / window.innerHeight) * 100;
-        this.updateHeight(newHeight);
+    const dismiss = () => {
+        if (lightDismiss) {
+            hide();
+        }
     };
 
-    #dragStop = () => {
-        this.#isDragging = false;
-        this.container.classList.remove("dragging");
-        const sheetHeight = parseInt(this.#content.style.height);
-        if (sheetHeight < this.#options.breakpoints[0]) {
-            this.hide();
+    const dragStart = (e) => {
+        isDragging = true;
+        startY = e.pageY || e.touches?.[0].pageY;
+        startHeight = parseInt(content.style.height);
+        container.classList.add("dragging");
+    };
+
+    const dragging = (e) => {
+        if (!isDragging) return;
+        const delta = startY - (e.pageY || e.touches?.[0].pageY);
+        const newHeight = startHeight + (delta / window.innerHeight) * 100;
+        updateHeight(newHeight);
+    };
+
+    const dragStop = () => {
+        isDragging = false;
+        container.classList.remove("dragging");
+        const sheetHeight = parseInt(content.style.height);
+        if (sheetHeight < breakpoints[0]) {
+            hide();
         }
-        else if (sheetHeight > this.#options.breakpoints[this.#options.breakpoints.length - 1]) {
-            this.updateHeight(100);
+        else if (sheetHeight > breakpoints[breakpoints.length - 1]) {
+            updateHeight(100);
         }
         else {
-            const closest = this.#options.breakpoints.reduce((prev, curr) => {
+            const closest = breakpoints.reduce((prev, curr) => {
                 return (Math.abs(curr - sheetHeight) < Math.abs(prev - sheetHeight) ? curr : prev);
             });
-            this.updateHeight(closest);
+            updateHeight(closest);
         }
     };
-}
 
-export const initialize = (container, options) => new BottomSheet(container, options)
+    icon.addEventListener("mousedown", dragStart);
+    icon.addEventListener("mousemove", dragging);
+    icon.addEventListener("mouseup", dragStop);
+
+    icon.addEventListener("touchstart", dragStart, { passive: true });
+    icon.addEventListener("touchmove", dragging, { passive: true });
+    icon.addEventListener("touchend", dragStop, { passive: true });
+
+    overlay.addEventListener("click", dismiss);
+
+    return {
+        dispose: () => {
+            icon.removeEventListener("mousedown", dragStart);
+            icon.removeEventListener("mousemove", dragging);
+            icon.removeEventListener("mouseup", dragStop);
+
+            icon.removeEventListener("touchstart", dragStart, { passive: true });
+            icon.removeEventListener("touchmove", dragging, { passive: true });
+            icon.removeEventListener("touchend", dragStop, { passive: true });
+
+            overlay.removeEventListener("click", dismiss);
+        },
+        show,
+        hide,
+        updateHeight,
+        updateOptions,
+    };
+};

@@ -1,5 +1,5 @@
 .sheet-container {
-    @apply fixed top-0 left-0 size-full flex opacity-0 pointer-events-none items-center justify-end flex-col transition-all ease-linear;
+    @apply fixed top-0 left-0 size-full flex opacity-0 pointer-events-none items-center justify-end flex-col transition-all ease-linear z-[9999];
 }
 
 .sheet-container.show {

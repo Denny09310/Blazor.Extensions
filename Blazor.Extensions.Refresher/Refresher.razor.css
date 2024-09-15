@@ -1,9 +1,14 @@
 .pull-to-refresh-container {
 
+    position: relative
+}
+
+.pull-to-refresh {
+
     overscroll-behavior-y: auto
 }
 
-.pull-to-refresh-container .pull-to-refresh {
+.pull-to-refresh-loader {
 
     position: fixed;
 
@@ -19,14 +24,14 @@
 
     justify-content: center;
 
-    transition-property: all;
+    transition-property: top;
 
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
     transition-duration: 150ms
 }
 
-.pull-to-refresh-container .pull-to-refresh.visible {
+.pull-to-refresh-loader[data-visible] {
 
     top: 0.5rem
 }

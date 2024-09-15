@@ -1,14 +1,13 @@
 @using Blazor.Extensions.Refresher.Options
 
+@implements IAsyncDisposable
 @inject IJSRuntime JSRuntime
 
-<div @ref="element" class="pull-to-refresh-container @Class">
-    <div class="pull-to-refresh">
-        @RefresherLoader
-    </div>
-
-    @RefresherContent
+<div @ref="loader" class="pull-to-refresh-loader">
+    @RefresherLoader
 </div>
+
+@RefresherContent
 
 @code
 {
@@ -25,22 +24,38 @@
     public string? Class { get; set; }
 
     [Parameter]
+    [EditorRequired]
+    public string ContainerSelector { get; set; } = default!;
+
+    [Parameter]
     public EventCallback OnRefresh { get; set; }
 
-    private ElementReference element;
-    private IJSObjectReference reference = default!;
+    private ElementReference loader;
+    private IJSObjectReference? disposable;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (disposable is not null)
+        {
+            await disposable.InvokeVoidAsync("dispose");
+            await disposable.DisposeAsync();
+        }
+
+        GC.SuppressFinalize(this);
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            Options.ContainerSelector = ContainerSelector;
             Options.Events = new RefresherEventsOptions
             {
                 OnRefresh = DotNetCallbackReference.Create(() => OnRefresh.InvokeAsync()),
             };
 
             var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Blazor.Extensions.Refresher/Refresher.razor.js");
-            reference = await module.InvokeAsync<IJSObjectReference>("initialize", element, Options);
+            disposable = await module.InvokeAsync<IJSObjectReference>("initialize", loader, Options);
         }
     }
 }

@@ -1,23 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
 
+		<PackageId>Blazor.Extensions.BottomSheet</PackageId>
+		<Version>1.0.1</Version>
+		<Authors>Koja Dennis</Authors>
+		<Description>A Blazor package that provides a bottom sheet feature for Blazor web applications.</Description>
+		<PackageTags>blazor; javascript; interop; razor; bottom sheet; web; UI; components</PackageTags>
+		<PackageProjectUrl>https://github.com/Denny09310/BlazorComponentsExperiments</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Denny09310/BlazorComponentsExperiments</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReleaseNotes>Initial release of the Blazor.Extensions.BottomSheet package.</PackageReleaseNotes>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
-	<PackageReference Include="Blazor.Javascript.Interop.Extensions" Version="0.0.3.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Blazor.Javascript.Interop.Extensions" Version="0.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
+	</ItemGroup>
 
 </Project>
