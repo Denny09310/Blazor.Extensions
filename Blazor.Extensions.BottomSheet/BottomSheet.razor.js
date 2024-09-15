@@ -86,9 +86,6 @@
         if (sheetHeight < breakpoints[0]) {
             hide();
         }
-        else if (sheetHeight > breakpoints[breakpoints.length - 1]) {
-            updateHeight(100);
-        }
         else {
             const closest = breakpoints.reduce((prev, curr) => {
                 return (Math.abs(curr - sheetHeight) < Math.abs(prev - sheetHeight) ? curr : prev);

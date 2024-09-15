@@ -6,7 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<PackageId>Blazor.Extensions.BottomSheet</PackageId>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<Authors>Koja Dennis</Authors>
 		<Description>A Blazor package that provides a bottom sheet feature for Blazor web applications.</Description>
 		<PackageTags>blazor; javascript; interop; razor; bottom sheet; web; UI; components</PackageTags>
