@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+    body {
+        -webkit-tap-highlight-color: transparent;
+    }
+
     h1:focus {
         outline: none;
     }
@@ -87,5 +91,12 @@
 
     .btn.btn-primary {
         @apply cursor-pointer rounded-sm border-none bg-[#4a98f7] px-4 py-6 text-sm text-white shadow-sm outline-none transition hover:bg-[#2382f6];
+    }
+
+    @media (display-mode: standalone) {
+        html,
+        body {
+            overscroll-behavior: none;
+        }
     }
 }

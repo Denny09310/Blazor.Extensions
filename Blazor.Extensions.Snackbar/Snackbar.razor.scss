@@ -1,5 +1,5 @@
 .snackbar {
-    @apply invisible min-w-64 w-11/12 max-w-screen-lg shadow-md rounded-md p-4 fixed mx-auto z-10 bottom-8 left-1/2 -translate-x-1/2;
+    @apply invisible min-w-64 w-11/12 max-w-screen-lg bg-white shadow-md rounded-md p-4 fixed mx-auto z-10 bottom-8 left-1/2 -translate-x-1/2;
 }
 
 .snackbar.show {
@@ -14,14 +14,14 @@
     }
 
     to {
-        bottom: 32px;
+        bottom: 2rem;
         opacity: 1;
     }
 }
 
 @keyframes snackbar-exit {
     from {
-        bottom: 32px;
+        bottom: 2rem;
         opacity: 1;
     }
 
