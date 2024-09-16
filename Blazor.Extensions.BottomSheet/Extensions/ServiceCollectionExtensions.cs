@@ -1,7 +1,6 @@
 ﻿using Blazor.Extensions.BottomSheet.Services;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Blazor.Extensions.BottomSheet;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {

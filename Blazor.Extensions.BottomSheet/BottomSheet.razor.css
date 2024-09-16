@@ -30,7 +30,9 @@
 
     transition-duration: 150ms;
 
-    transition-timing-function: linear
+    transition-timing-function: linear;
+
+    animation-timing-function: linear
 }
 
 .sheet-container.show {

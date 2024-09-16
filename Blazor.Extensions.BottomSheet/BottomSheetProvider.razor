@@ -1,4 +1,5 @@
-﻿@inject IBottomSheetService BottomSheetService
+﻿@implements IDisposable
+@inject IBottomSheetService BottomSheetService
 
 <BottomSheet @ref="_bottomSheet" Title="@Title" Options="Options" OnWillDismiss="RestoreDefaults">
     <BottomSheetContent>
@@ -16,6 +17,13 @@
 
     private RenderFragment? BottomSheetContent { get; set; }
     private string? Title { get; set; }
+
+    public void Dispose()
+    {
+        BottomSheetService.ShowRequested -= HandleShowBottomSheet;
+        BottomSheetService.HideRequested -= HandleHideBottomSheet;
+        GC.SuppressFinalize(this);
+    }
 
     protected override void OnInitialized()
     {
