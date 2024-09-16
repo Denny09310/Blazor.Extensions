@@ -1,0 +1,71 @@
+@implements IDisposable
+@inject ISnackbarService SnackbarService
+
+<Snackbar @ref="_snackbar" Message="@Message" OnWillShow="OnWillShow" OnDidDismiss="OnDidDismiss" />
+
+@code
+{
+    private Snackbar _snackbar = default!;
+
+    private readonly Queue<string> _messages = new();
+
+    private string? Message { get; set; }
+    private bool Showing { get; set; }
+
+    public void Dispose()
+    {
+        SnackbarService.ShowRequested -= HandleShowRequested;
+        SnackbarService.HideRequested -= HandleHideRequested;
+        GC.SuppressFinalize(this);
+    }
+
+    protected override void OnInitialized()
+    {
+        SnackbarService.ShowRequested += HandleShowRequested;
+        SnackbarService.HideRequested += HandleHideRequested;
+    }
+
+    private async void HandleShowRequested(string message, SnackbarOptions? _)
+    {
+        _messages.Enqueue(message);
+
+        if (!Showing)
+        {
+            await ShowNextMessage();
+        }
+    }
+
+    private async void HandleHideRequested()
+    {
+        await _snackbar.HideAsync();
+    }
+
+    private void OnWillShow()
+    {
+        Showing = true;
+    }
+
+    private async Task OnDidDismiss()
+    {
+        if (_messages.Count == 0)
+        {
+            Showing = false;
+            return;
+        }
+
+        await Task.Delay(100);
+        await ShowNextMessage();
+    }
+
+    private async Task ShowNextMessage()
+    {
+        Message = _messages.Dequeue();
+        Console.WriteLine("Showing next message '{0}'. {1} remaining", Message, _messages.Count);
+
+        await InvokeAsync(async () =>
+        {
+            StateHasChanged();
+            await _snackbar.ShowAsync();
+        });
+    }
+}

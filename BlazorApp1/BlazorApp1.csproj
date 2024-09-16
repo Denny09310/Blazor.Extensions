@@ -10,6 +10,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Blazor.Extensions.BottomSheet\Blazor.Extensions.BottomSheet.csproj" />
 		<ProjectReference Include="..\Blazor.Extensions.Refresher\Blazor.Extensions.Refresher.csproj" />
+		<ProjectReference Include="..\Blazor.Extensions.Snackbar\Blazor.Extensions.Snackbar.csproj" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" PrivateAssets="all" />
 	</ItemGroup>
@@ -20,6 +21,7 @@
 		<Watch Include="./**/*.scss" />
 		<Watch Include="../Blazor.Extensions.BottomSheet/**/*.scss" />
 		<Watch Include="../Blazor.Extensions.Refresher/**/*.scss" />
+		<Watch Include="../Blazor.Extensions.Snackbar/**/*.scss" />
 	</ItemGroup>
 
 	<Target Name="StylesCompile" BeforeTargets="BeforeBuild">

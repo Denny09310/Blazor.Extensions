@@ -85,7 +85,7 @@
         color: #c02d76;
     }
 
-    .show-modal-btn {
+    .btn.btn-primary {
         @apply cursor-pointer rounded-sm border-none bg-[#4a98f7] px-4 py-6 text-sm text-white shadow-sm outline-none transition hover:bg-[#2382f6];
     }
 }

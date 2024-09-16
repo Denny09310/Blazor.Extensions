@@ -10,6 +10,7 @@ const paths = [
     "./**/*.scss",
     "../Blazor.Extensions.BottomSheet/**/*.scss",
     "../Blazor.Extensions.Refresher/**/*.scss",
+    "../Blazor.Extensions.Snackbar/**/*.scss",
 ];
 
 const options = {

@@ -1,19 +1,17 @@
 ﻿@page "/"
-@using Blazor.Extensions.BottomSheet.Services
-@using Blazor.Extensions.BottomSheet.Options
-@using Blazor.Extensions.Refresher
 @inject IBottomSheetService BottomSheetService
+@inject ISnackbarService SnacbarService
 
 <PageTitle>Home</PageTitle>
 
 <div class="flex flex-col gap-2 p-4">
-    <button class="show-modal-btn" @onclick="ShowBottomSheetComponent">Show Bottom Sheet</button>
-    <button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithOptions">Show Bottom Sheet With Options</button>
-    <button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithCustomClasses">Show Bottom Sheet With Custom Classes</button>
-    <button class="show-modal-btn" @onclick="ShowBottomSheetComponentWithParameters">Show Bottom Sheet With Parameters</button>
+    <button class="btn btn-primary" @onclick="ShowBottomSheetComponent">Show Bottom Sheet</button>
+    <button class="btn btn-primary" @onclick="ShowBottomSheetComponentWithOptions">Show Bottom Sheet With Options</button>
+    <button class="btn btn-primary" @onclick="ShowBottomSheetComponentWithCustomClasses">Show Bottom Sheet With Custom Classes</button>
+    <button class="btn btn-primary" @onclick="ShowBottomSheetComponentWithParameters">Show Bottom Sheet With Parameters</button>
 </div>
 
-<div id="refresher-container" class="h-96">
+<div id="refresher-container" class="h-48">
     <Refresher ContainerSelector="#refresher-container" Class="h-96" OnRefresh="Refresh">
         <RefresherLoader>
             <RefresherLoaderSpinner>
@@ -30,6 +28,10 @@
             </div>
         </RefresherContent>
     </Refresher>
+</div>
+
+<div class="flex flex-col gap-2 p-4">
+    <button class="btn btn-primary" @onclick="ShowSnackbar">Show Snackbar</button>
 </div>
 
 <style>
@@ -78,5 +80,10 @@
         Status = "Refreshing ...";
         await Task.Delay(2500);
         Status = "Pull here to refresh";
+    }
+
+    private void ShowSnackbar()
+    {
+        SnacbarService.ShowSnackbar("This is a simple snackbar message");
     }
 }

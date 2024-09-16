@@ -1,0 +1,63 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+
+<div @ref="element" class="snackbar">
+    @Message
+</div>
+
+@code
+{
+    [Parameter]
+    public string? Message { get; set; }
+
+    [Parameter]
+    public SnackbarOptions Options { get; set; } = new();
+
+    [Parameter]
+    public EventCallback OnDidDismiss { get; set; }
+
+    [Parameter]
+    public EventCallback OnDidShow { get; set; }
+
+    [Parameter]
+    public EventCallback OnWillDismiss { get; set; }
+
+    [Parameter]
+    public EventCallback OnWillShow { get; set; }
+
+    private ElementReference element;
+    private IJSObjectReference? disposable;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (disposable != null)
+        {
+            await disposable.InvokeVoidAsync("dispose");
+            await disposable.DisposeAsync();
+        }
+
+        GC.SuppressFinalize(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            Options.Events = new SnackbarOptionsEvents
+            {
+                OnDidDismiss = DotNetCallbackReference.Create(() => OnDidDismiss.InvokeAsync()),
+                OnDidShow = DotNetCallbackReference.Create(() => OnDidShow.InvokeAsync()),
+                OnWillDismiss = DotNetCallbackReference.Create(() => OnWillDismiss.InvokeAsync()),
+                OnWillShow = DotNetCallbackReference.Create(() => OnWillShow.InvokeAsync()),
+            };
+
+            var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Blazor.Extensions.Snackbar/Snackbar.razor.js");
+            disposable = await module.InvokeAsync<IJSObjectReference>("initialize", element, Options);
+        }
+    }
+
+    public ValueTask ShowAsync() => disposable?.InvokeVoidAsync("show") ?? throw new InvalidOperationException($" {nameof(Snackbar)} not initialized");
+    public ValueTask HideAsync() => disposable?.InvokeVoidAsync("hide") ?? throw new InvalidOperationException($" {nameof(Snackbar)} not initialized");
+}

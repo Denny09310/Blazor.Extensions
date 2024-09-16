@@ -1,0 +1,48 @@
+.snackbar {
+    visibility: hidden;
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    z-index: 10;
+    margin-left: auto;
+    margin-right: auto;
+    width: 91.666667%;
+    min-width: 16rem;
+    max-width: 1024px;
+    --tw-translate-x: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    border-radius: 0.375rem;
+    padding: 1rem;
+    --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.snackbar.show {
+    visibility: visible;
+    animation: snackbar-enter 0.5s, snackbar-exit 0.5s 2.5s forwards;
+}
+
+@keyframes snackbar-enter {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 32px;
+        opacity: 1;
+    }
+}
+
+@keyframes snackbar-exit {
+    from {
+        bottom: 32px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}

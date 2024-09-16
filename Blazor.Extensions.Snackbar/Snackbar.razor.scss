@@ -1,0 +1,32 @@
+.snackbar {
+    @apply invisible min-w-64 w-11/12 max-w-screen-lg shadow-md rounded-md p-4 fixed mx-auto z-10 bottom-8 left-1/2 -translate-x-1/2;
+}
+
+.snackbar.show {
+    @apply visible;
+    animation: snackbar-enter 0.5s, snackbar-exit 0.5s 2.5s forwards;
+}
+
+@keyframes snackbar-enter {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 32px;
+        opacity: 1;
+    }
+}
+
+@keyframes snackbar-exit {
+    from {
+        bottom: 32px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
