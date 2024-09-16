@@ -1,7 +1,5 @@
 export const initialize = (loader, options) => {
-    const { containerSelector, refreshThreshold, events } = options;
-
-    const container = document.querySelector(containerSelector);
+    const container = document.querySelector(options.containerSelector);
 
     let touchstartY = 0;
     let refreshTriggered = false;
@@ -16,7 +14,7 @@ export const initialize = (loader, options) => {
         const touchDiff = touchY - touchstartY;
 
         // Check if container is scrolled to the top
-        if (container.scrollTop === 0 && touchDiff > refreshThreshold) {
+        if (container.scrollTop === 0 && touchDiff > options.refreshThreshold) {
             loader.dataset.visible = true;
 
             const rotation = touchDiff % 360; // Rotate based on touch difference
@@ -42,7 +40,7 @@ export const initialize = (loader, options) => {
         if (refreshTriggered && 'visible' in loader.dataset) {
             delete loader.dataset.visible;
             loader.style.transform = ''; // Reset icon rotation after refresh ends
-            await events.onRefresh();
+            await options.events.onRefresh();
         }
     };
 

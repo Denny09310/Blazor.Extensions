@@ -1,6 +1,4 @@
 ﻿export const initialize = (container, options) => {
-    let { events, breakpoints, initialBreakpoint, lightDismiss } = options;
-
     const overlay = container.querySelector(".sheet-overlay");
     const content = container.querySelector(".sheet-content");
     const icon = container.querySelector(".sheet-drag-icon");
@@ -15,14 +13,14 @@
     };
 
     const show = () => {
-        events.onWillShow();
+        options.events.onWillShow();
 
         container.classList.add("show");
         document.body.style.overflowY = "hidden";
 
-        updateHeight(initialBreakpoint ?? breakpoints[0]);
+        updateHeight(options.initialBreakpoint ?? options.breakpoints[0]);
 
-        events.onDidShow();
+        options.events.onDidShow();
     };
 
     const updateOptions = (newOptions, merge = true) => {
@@ -38,29 +36,23 @@
                     return acc;
                 }, {})
             };
-
-            events = {
-                ...events,
-                ...newOptions?.events ?? {}
-            };
         }
         else {
             options = newOptions;
-            events = newOptions?.events ?? {};
         }
     };
 
     const hide = () => {
-        events.onWillDismiss();
+        options.events.onWillDismiss();
 
         container.classList.remove("show");
         document.body.style.overflowY = "auto";
 
-        events.onDidDismiss();
+        options.events.onDidDismiss();
     };
 
     const dismiss = () => {
-        if (lightDismiss) {
+        if (options.lightDismiss) {
             hide();
         }
     };
@@ -83,11 +75,11 @@
         isDragging = false;
         container.classList.remove("dragging");
         const sheetHeight = parseInt(content.style.height);
-        if (sheetHeight < breakpoints[0]) {
+        if (sheetHeight < options.breakpoints[0]) {
             hide();
         }
         else {
-            const closest = breakpoints.reduce((prev, curr) => {
+            const closest = options.breakpoints.reduce((prev, curr) => {
                 return (Math.abs(curr - sheetHeight) < Math.abs(prev - sheetHeight) ? curr : prev);
             });
             updateHeight(closest);
@@ -105,20 +97,20 @@
     overlay.addEventListener("click", dismiss);
 
     return {
+        show,
+        hide,
+        updateHeight,
+        updateOptions,
         dispose: () => {
             icon.removeEventListener("mousedown", dragStart);
             icon.removeEventListener("mousemove", dragging);
             icon.removeEventListener("mouseup", dragStop);
 
-            icon.removeEventListener("touchstart", dragStart, { passive: true });
-            icon.removeEventListener("touchmove", dragging, { passive: true });
-            icon.removeEventListener("touchend", dragStop, { passive: true });
+            icon.removeEventListener("touchstart", dragStart);
+            icon.removeEventListener("touchmove", dragging);
+            icon.removeEventListener("touchend", dragStop);
 
             overlay.removeEventListener("click", dismiss);
-        },
-        show,
-        hide,
-        updateHeight,
-        updateOptions,
+        }
     };
 };
